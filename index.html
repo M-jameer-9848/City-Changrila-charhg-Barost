@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111111">
+<title>City ShangriLa Char Gha Broast | Billing</title>
+
+<style>
+:root{
+  --black:#111;
+  --gray:#555;
+  --light:#f2f2f2;
+  --border:#dedede;
+  --red:#b00020;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--light);
+  color:var(--black);
+  padding:10px;
+}
+.container{max-width:540px;margin:auto}
+.header{
+  background:#111;color:white;text-align:center;
+  padding:15px 10px;border-radius:10px;margin-bottom:10px;
+}
+.header h1{
+  font-size:23px;font-weight:900;line-height:1.2;
+}
+.header p{font-size:12px;margin-top:6px}
+.clock{font-weight:bold;font-size:13px;margin-top:8px}
+.box{
+  background:white;padding:12px;border-radius:10px;
+  margin-bottom:10px;box-shadow:0 2px 7px #0000000d;
+}
+.section-title{
+  font-size:17px;font-weight:900;
+  border-bottom:2px solid #111;padding-bottom:6px;margin-bottom:7px;
+}
+.item{
+  display:grid;
+  grid-template-columns:minmax(95px,1fr) 60px auto 76px;
+  align-items:center;gap:5px;padding:10px 0;
+  border-bottom:1px solid var(--border);
+}
+.item-name{font-weight:bold;font-size:14px}
+.unit-price{text-align:center;font-size:12px;color:var(--gray)}
+.controls{display:flex;align-items:center;gap:5px}
+.controls button{
+  width:32px;height:32px;border:0;border-radius:5px;
+  background:#111;color:white;font-size:20px;font-weight:bold;
+}
+.qty{min-width:20px;text-align:center;font-weight:bold}
+.line-total{text-align:right;font-size:12px;font-weight:bold}
+.info-row{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;padding:7px 0;font-size:14px;
+}
+.info-row strong{font-weight:900}
+.tax-input{
+  width:125px;max-width:48%;padding:9px;
+  border:1px solid #aaa;border-radius:6px;
+  font-size:16px;font-weight:bold;text-align:right;
+}
+.tax-help{font-size:11px;color:#666;margin:3px 0 8px}
+.total-row{
+  border-top:2px solid #111;margin-top:5px;padding-top:11px;
+  font-size:21px;font-weight:900;
+}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn{
+  border:0;border-radius:7px;padding:12px 7px;
+  color:white;background:#222;font-size:14px;font-weight:bold;
+}
+.btn:active{opacity:.8}
+.print-btn{grid-column:1/-1;background:#000;padding:15px;font-size:17px}
+.download-btn{background:#333}
+.share-btn{background:#555}
+.clear-btn{grid-column:1/-1;background:var(--red)}
+.footer{text-align:center;font-size:11px;color:#666;padding:3px 0 10px}
+@media(max-width:380px){
+  body{padding:6px}
+  .box{padding:9px}
+  .item{grid-template-columns:minmax(85px,1fr) 48px auto 62px;gap:3px}
+  .item-name{font-size:12px}
+  .unit-price,.line-total{font-size:10px}
+  .controls{gap:3px}
+  .controls button{width:27px;height:30px}
+  .qty{min-width:16px;font-size:12px}
+}
+
+/* PRINT: plain white thermal receipt */
+@media print{
+  @page{size:80mm auto;margin:0}
+  html,body{
+    width:80mm!important;margin:0!important;padding:0!important;
+    background:#fff!important;color:#000!important;
+    font-family:Arial,Helvetica,sans-serif!important;
+  }
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .container{width:80mm!important;max-width:none!important;margin:0!important;padding:0!important}
+  .header,.box,.footer{display:none!important}
+  #receipt{
+    display:block!important;width:80mm!important;
+    padding:5mm 4mm!important;background:white!important;color:black!important;
+  }
+  .r-name{
+    text-align:center;font-size:22px;font-weight:900;
+    line-height:1.2;margin-bottom:4px;
+  }
+  .r-owner{text-align:center;font-size:12px;margin-bottom:9px}
+  .r-rule{border-top:1px dashed #000;margin:8px 0}
+  .r-info{font-size:13px;line-height:1.7}
+  .r-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+  .r-table th{font-size:12px;font-weight:900;border-bottom:1px solid #000;padding:6px 1px}
+  .r-table td{padding:7px 1px;vertical-align:top;overflow-wrap:anywhere}
+  .r-table .name{text-align:left;width:37%}
+  .r-table .quantity{text-align:center;width:12%}
+  .r-table .price{text-align:right;width:23%}
+  .r-table .amount{text-align:right;width:28%}
+  .r-summary{font-size:14px;margin-top:7px}
+  .r-summary-row{display:flex;justify-content:space-between;gap:5px;padding:4px 0}
+  .r-grand{
+    border-top:2px solid #000;margin-top:5px;padding-top:8px;
+    display:flex;justify-content:space-between;gap:5px;
+    font-size:19px;font-weight:900;
+  }
+  .r-thanks{text-align:center;font-size:13px;font-weight:bold;margin-top:13px}
+  .r-footer{text-align:center;font-size:11px;margin-top:5px}
+  button{display:none!important}
+}
+#receipt{display:none}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <header class="header">
+    <h1>CITY SHANGRILA<br>CHAR GHA BROAST</h1>
+    <p>Owner: Shoaib | +92 334 3749881</p>
+    <div class="clock" id="clock">Loading Pakistan time...</div>
+  </header>
+
+  <section class="box">
+    <div class="section-title">QUICK ORDER</div>
+
+    <div class="item">
+      <div class="item-name">Piece</div>
+      <div class="unit-price">Rs. 490</div>
+      <div class="controls">
+        <button type="button" onclick="changeQty('piece',-1)">−</button>
+        <span class="qty" id="qty-piece">0</span>
+        <button type="button" onclick="changeQty('piece',1)">+</button>
+      </div>
+      <div class="line-total" id="line-piece">Rs. 0</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Regular Bottle</div>
+      <div class="unit-price">Rs. 70</div>
+      <div class="controls">
+        <button type="button" onclick="changeQty('regular',-1)">−</button>
+        <span class="qty" id="qty-regular">0</span>
+        <button type="button" onclick="changeQty('regular',1)">+</button>
+      </div>
+      <div class="line-total" id="line-regular">Rs. 0</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Naan</div>
+      <div class="unit-price">Rs. 20</div>
+      <div class="controls">
+        <button type="button" onclick="changeQty('naan',-1)">−</button>
+        <span class="qty" id="qty-naan">0</span>
+        <button type="button" onclick="changeQty('naan',1)">+</button>
+      </div>
+      <div class="line-total" id="line-naan">Rs. 0</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">1 Liter Bottle</div>
+      <div class="unit-price">Rs. 170</div>
+      <div class="controls">
+        <button type="button" onclick="changeQty('liter',-1)">−</button>
+        <span class="qty" id="qty-liter">0</span>
+        <button type="button" onclick="changeQty('liter',1)">+</button>
+      </div>
+      <div class="line-total" id="line-liter">Rs. 0</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">1.5 Liter Bottle</div>
+      <div class="unit-price">Rs. 200</div>
+      <div class="controls">
+        <button type="button" onclick="changeQty('onehalf',-1)">−</button>
+        <span class="qty" id="qty-onehalf">0</span>
+        <button type="button" onclick="changeQty('onehalf',1)">+</button>
+      </div>
+      <div class="line-total" id="line-onehalf">Rs. 0</div>
+    </div>
+
+    <div class="item">
+      <div class="item-name">Jumbo Bottle</div>
+      <div class="unit-price">Rs. 250</div>
+      <div class="controls">
+        <button type="button" onclick="changeQty('jumbo',-1)">−</button>
+        <span class="qty" id="qty-jumbo">0</span>
+        <button type="button" onclick="changeQty('jumbo',1)">+</button>
+      </div>
+      <div class="line-total" id="line-jumbo">Rs. 0</div>
+    </div>
+  </section>
+
+  <section class="box">
+    <div class="section-title">BILL SUMMARY</div>
+
+    <div class="info-row">
+      <span>Order Number</span>
+      <strong id="orderNo">0001</strong>
+    </div>
+
+    <div class="info-row">
+      <label for="headTax"><b>Optional Head Tax (Rs.)</b></label>
+      <input id="headTax" class="tax-input" type="number"
+        min="0" step="1" value="0" inputmode="numeric"
+        placeholder="0" oninput="calculateBill()">
+    </div>
+    <div class="tax-help">Tax zaroori nahi. Owner chahe to khud amount enter kare.</div>
+
+    <div class="info-row">
+      <span>Items Subtotal</span>
+      <strong id="subtotal">Rs. 0</strong>
+    </div>
+
+    <div class="info-row">
+      <span>Head Tax</span>
+      <strong id="taxDisplay">Rs. 0</strong>
+    </div>
+
+    <div class="info-row total-row">
+      <span>TOTAL</span>
+      <strong id="grandTotal">Rs. 0</strong>
+    </div>
+  </section>
+
+  <section class="box actions">
+    <button type="button" class="btn print-btn" onclick="printReceipt()">PRINT RECEIPT</button>
+    <button type="button" class="btn download-btn" onclick="downloadReceipt()">DOWNLOAD BILL</button>
+    <button type="button" class="btn share-btn" onclick="shareReceipt()">SHARE BILL</button>
+    <button type="button" class="btn clear-btn" onclick="clearBill()">CLEAR BILL / NEXT ORDER</button>
+  </section>
+
+  <div class="footer">City ShangriLa Char Gha Broast</div>
+</div>
+
+<!-- Receipt only: shown on print and used for download -->
+<div id="receipt">
+  <div class="r-name">CITY SHANGRILA<br>CHAR GHA BROAST</div>
+  <div class="r-owner">Owner: Shoaib | +92 334 3749881</div>
+  <div class="r-rule"></div>
+
+  <div class="r-info">
+    <b>Order No:</b> <span id="rOrder">0001</span><br>
+    <b>Date:</b> <span id="rDate">--</span><br>
+    <b>Time:</b> <span id="rTime">--</span>
+  </div>
+
+  <div class="r-rule"></div>
+
+  <table class="r-table">
+    <thead>
+      <tr>
+        <th class="name">ITEM</th>
+        <th class="quantity">QTY</th>
+        <th class="price">PRICE</th>
+        <th class="amount">TOTAL</th>
+      </tr>
+    </thead>
+    <tbody id="receiptItems"></tbody>
+  </table>
+
+  <div class="r-summary">
+    <div class="r-summary-row">
+      <span>Items Subtotal</span>
+      <b id="rSubtotal">Rs. 0</b>
+    </div>
+    <div class="r-summary-row" id="rTaxRow">
+      <span>Head Tax</span>
+      <b id="rTax">Rs. 0</b>
+    </div>
+  </div>
+
+  <div class="r-grand">
+    <span>TOTAL</span>
+    <span id="rTotal">Rs. 0</span>
+  </div>
+
+  <div class="r-thanks">THANK YOU FOR VISITING!</div>
+  <div class="r-footer">Please visit again.</div>
+</div>
+
+<script>
+"use strict";
+
+const menu = {
+  piece:   {name:"Piece", price:490},
+  regular: {name:"Regular Bottle", price:70},
+  naan:    {name:"Naan", price:20},
+  liter:   {name:"1 Liter Bottle", price:170},
+  onehalf: {name:"1.5 Liter Bottle", price:200},
+  jumbo:   {name:"Jumbo Bottle", price:250}
+};
+
+const qty = {
+  piece:0, regular:0, naan:0,
+  liter:0, onehalf:0, jumbo:0
+};
+
+let orderNumber = 1;
+
+try {
+  orderNumber = Math.max(
+    1, Number(localStorage.getItem("cityShangriLaOrder")) || 1
+  );
+} catch(e) {}
+
+function money(amount) {
+  return "Rs. " + Math.round(amount).toLocaleString("en-PK");
+}
+
+function orderLabel() {
+  return String(orderNumber).padStart(4,"0");
+}
+
+function showOrder() {
+  document.getElementById("orderNo").textContent = orderLabel();
+  document.getElementById("rOrder").textContent = orderLabel();
+}
+
+function changeQty(key, amount) {
+  qty[key] = Math.max(0, qty[key] + amount);
+  document.getElementById("qty-" + key).textContent = qty[key];
+  document.getElementById("line-" + key).textContent =
+    money(qty[key] * menu[key].price);
+  calculateBill();
+}
+
+function getBill() {
+  let subtotal = 0;
+  for (const key in menu) {
+    subtotal += qty[key] * menu[key].price;
+  }
+
+  const rawTax = Number(document.getElementById("headTax").value);
+  const tax = Number.isFinite(rawTax) ? Math.max(0, rawTax) : 0;
+
+  return {subtotal, tax, total:subtotal + tax};
+}
+
+function calculateBill() {
+  const bill = getBill();
+  document.getElementById("subtotal").textContent = money(bill.subtotal);
+  document.getElementById("taxDisplay").textContent = money(bill.tax);
+  document.getElementById("grandTotal").textContent = money(bill.total);
+}
+
+function getPakistanDate() {
+  return new Date();
+}
+
+function formatDate(date) {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone:"Asia/Karachi",
+    day:"2-digit", month:"2-digit", year:"numeric"
+  }).format(date);
+}
+
+function formatTime(date) {
+  return new Intl.DateTimeFormat("en-PK", {
+    timeZone:"Asia/Karachi",
+    hour:"2-digit", minute:"2-digit", second:"2-digit",
+    hour12:true
+  }).format(date);
+}
+
+function updateClock() {
+  const now = getPakistanDate();
+  document.getElementById("clock").textContent =
+    formatDate(now) + " | " + formatTime(now);
+}
+
+async function prepareReceipt() {
+  const bill = getBill();
+  const now = getPakistanDate();
+
+  document.getElementById("rOrder").textContent = orderLabel();
+  document.getElementById("rDate").textContent = formatDate(now);
+  document.getElementById("rTime").textContent = formatTime(now);
+  document.getElementById("rSubtotal").textContent = money(bill.subtotal);
+  document.getElementById("rTax").textContent = money(bill.tax);
+  document.getElementById("rTotal").textContent = money(bill.total);
+
+  // Tax row is omitted completely when no tax was entered.
+  document.getElementById("rTaxRow").style.display =
+    bill.tax > 0 ? "flex" : "none";
+
+  const rows = [];
+
+  for (const key in menu) {
+    if (qty[key] > 0) {
+      const line = qty[key] * menu[key].price;
+      rows.push(
+        `<tr>
+          <td class="name">${menu[key].name}</td>
+          <td class="quantity">${qty[key]}</td>
+          <td class="price">${menu[key].price}</td>
+          <td class="amount">${line.toLocaleString("en-PK")}</td>
+        </tr>`
+      );
+    }
+  }
+
+  document.getElementById("receiptItems").innerHTML =
+    rows.length ? rows.join("") :
+    '<tr><td colspan="4" style="text-align:center;padding:10px 0">No items added</td></tr>';
+
+  return {
+    bill,
+    text: buildShareText(bill, now)
+  };
+}
+
+function buildShareText(bill, now) {
+  let text =
+    "CITY SHANGRILA CHAR GHA BROAST\n" +
+    "Owner: Shoaib | +92 334 3749881\n" +
+    "Order: " + orderLabel() + "\n" +
+    "Date: " + formatDate(now) + "\n" +
+    "Time: " + formatTime(now) + "\n\n";
+
+  for (const key in menu) {
+    if (qty[key] > 0) {
+      text += menu[key].name + " x " + qty[key] +
+        " = Rs. " + (qty[key] * menu[key].price) + "\n";
+    }
+  }
+
+  text += "\nItems Subtotal: Rs. " + bill.subtotal;
+  if (bill.tax > 0) text += "\nHead Tax: Rs. " + bill.tax;
+  text += "\nTOTAL: Rs. " + bill.total;
+  text += "\n\nTHANK YOU FOR VISITING!";
+  return text;
+}
+
+async function printReceipt() {
+  await prepareReceipt();
+  window.print();
+}
+
+async function downloadReceipt() {
+  await prepareReceipt();
+
+  const receiptHTML = document.getElementById("receipt").innerHTML;
+  const style = `
+    @page{size:80mm auto;margin:0}
+    body{font-family:Arial,sans-serif;width:72mm;margin:0 auto;padding:4mm;color:#000}
+    .r-name{text-align:center;font-size:22px;font-weight:900;line-height:1.2}
+    .r-owner{text-align:center;font-size:12px;margin:7px 0}
+    .r-rule{border-top:1px dashed #000;margin:8px 0}
+    .r-info{font-size:13px;line-height:1.7}
+    .r-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+    .r-table th{font-size:11px;border-bottom:1px solid #000;padding:5px 1px}
+    .r-table td{padding:7px 1px;overflow-wrap:anywhere}
+    .name{text-align:left;width:37%}.quantity{text-align:center;width:12%}
+    .price{text-align:right;width:23%}.amount{text-align:right;width:28%}
+    .r-summary{font-size:13px;margin-top:7px}
+    .r-summary-row{display:flex;justify-content:space-between;padding:4px 0}
+    .r-grand{display:flex;justify-content:space-between;border-top:2px solid #000;padding-top:8px;margin-top:5px;font-size:19px;font-weight:900}
+    .r-thanks{text-align:center;font-size:13px;font-weight:bold;margin-top:13px}
+    .r-footer{text-align:center;font-size:11px;margin-top:5px}
+  `;
+
+  const file = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Receipt ${orderLabel()}</title><style>${style}</style></head>
+    <body>${receiptHTML}</body></html>`;
+
+  const blob = new Blob([file], {type:"text/html;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "City-ShangriLa-Bill-" + orderLabel() + ".html";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+}
+
+async function shareReceipt() {
+  const result = await prepareReceipt();
+  const text = result.text;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title:"City ShangriLa Receipt",
+        text
+      });
+      return;
+    } catch(error) {
+      if (error && error.name === "AbortError") return;
+    }
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    alert("Bill copy ho gaya. Ab WhatsApp ya kisi app mein paste karke share kar dein.");
+  } catch(error) {
+    window.prompt("Bill text copy karein:", text);
+  }
+}
+
+function clearBill() {
+  if (!confirm("Current bill clear karke next order shuru karein?")) return;
+
+  for (const key in qty) {
+    qty[key] = 0;
+    document.getElementById("qty-" + key).textContent = "0";
+    document.getElementById("line-" + key).textContent = money(0);
+  }
+
+  document.getElementById("headTax").value = "0";
+
+  orderNumber++;
+  try {
+    localStorage.setItem("cityShangriLaOrder", String(orderNumber));
+  } catch(e) {}
+
+  showOrder();
+  calculateBill();
+}
+
+showOrder();
+calculateBill();
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
